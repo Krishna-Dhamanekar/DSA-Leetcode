@@ -1,32 +1,37 @@
-
 class Solution {
-    public int smallestDivisor(int[] nums, int threshold) {
+    public int smallestDivisor(int[] nums, int threshold)
+    {
 
-        int low = 1;
-        int high = 0;
+        int low=1;
+        int high=Arrays.stream(nums).max().getAsInt();
+        int ans=Arrays.stream(nums).max().getAsInt();
 
-        for (int num : nums) {
-            high = Math.max(high, num);
-        }
+        while(low<=high)
+        {
+            int mid=low + (high - low)/2;
 
-        int ans = high;
+            int sum=0;
 
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            int sum = 0;
-
-            for (int num : nums) {
-                sum += (num + mid - 1) / mid;
+            for(int i=0;i<nums.length;i++)
+            {
+                sum=sum + (int)Math.ceil((float)nums[i]/mid);
             }
 
-            if (sum <= threshold) {
-                ans = mid;
-                high = mid - 1;
-            } else {
-                low = mid + 1;
+            if(sum<=threshold)
+            {
+                if(mid<ans)
+                {
+                    ans=mid;
+                }
+                high=mid-1;
             }
+            else
+            {
+                low=mid+1;
+            }
+
         }
+
 
         return ans;
     }
